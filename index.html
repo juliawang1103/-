@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>多益挑戰 30天完全版 v33.0</title>
+    <title>多益挑戰 30天完全版 v33.1</title>
     <style>
         :root { --primary: #3498db; --success: #2ecc71; --error: #e74c3c; --bg: #f5f7f9; --text: #2c3e50; --progress-bg: #e5e9ec; --gemini: #8e44ad; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
@@ -21,7 +21,8 @@
         .progress-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
         .btn-reset { background: #fee2e2; border: 1px solid #fecaca; color: #dc2626; padding: 12px; border-radius: 12px; font-size: 14px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 20px; margin-bottom: 40px; }
         .card { background: white; padding: 40px 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; margin-bottom: 15px; position: relative; }
-        .word-en { font-size: 32px; font-weight: 800; color: var(--primary); display: inline-block; vertical-align: middle; word-wrap: break-word; max-width: 80%; }
+        /* 修改此處：改用 word-break: keep-all 以及響應式縮放字體 clamp */
+        .word-en { font-size: clamp(22px, 8vw, 36px); font-weight: 800; color: var(--primary); display: inline-block; vertical-align: middle; word-break: keep-all; overflow-wrap: normal; max-width: 96%; line-height: 1.2; }
         .btn-tool { background: #f0f7ff; border: 1.5px solid #3498db; color: #3498db; padding: 8px 14px; border-radius: 10px; font-size: 14px; cursor: pointer; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; }
         .btn-gemini { background: #f3f0ff; border-color: #d1c4e9; color: var(--gemini); }
         .options { display: grid; gap: 10px; margin-bottom: 20px; }
@@ -170,7 +171,7 @@
     function renderReview() {
         const container = document.getElementById('review-container'); if(reviewList.length === 0) { container.innerHTML = `<div style="text-align:center;margin-top:100px;color:#95a5a6;">單字庫目前是空的。</div>`; return; }
         const item = reviewList[rvIdx];
-        container.innerHTML = `<div class="card flashcard" onclick="event.stopPropagation(); rvShowZh=!rvShowZh; renderReview()"><button class="btn-small danger" onclick="event.stopPropagation(); removeReview('${item.en}')">移除</button><div><div class="word-en" style="font-size:32px;">${item.en}</div></div><div style="margin-top:10px;"><button class="btn-tool" style="padding:8px 12px; border-radius:8px; background:#f0f7ff; border:1px solid #3498db; color:#3498db; font-weight:bold; cursor:pointer;" onclick="event.stopPropagation(); playVoice('${item.en}');">📢 發音</button><a class="btn-tool" style="padding:8px 12px; border-radius:8px; background:#f3f0ff; border:1px solid #d1c4e9; color:#8e44ad; font-weight:bold; text-decoration:none; margin-left:10px;" href="#" target="_blank" rel="noreferrer noopener" onclick="triggerAutoAI(event, '${item.en}')">🔍 字根</a></div><div style="color:#bdc3c7; font-style:italic; font-size:13px; margin: 15px 0;">(${item.pos})</div>${rvShowZh ? `<div class="zh-hint">${item.zh}</div>` : `<div style="margin-top:30px;opacity:0.6;font-size:11px;color:var(--primary);">點擊卡片翻面</div>`}</div><div class="nav-btns"><button class="nav-btn" onclick="event.stopPropagation(); rvIdx=(rvIdx-1+reviewList.length)%reviewList.length; rvShowZh=false; renderReview()">上一張</button><button class="nav-btn next" onclick="event.stopPropagation(); rvIdx=(rvIdx+1)%reviewList.length; rvShowZh=false; renderReview()">下一張</button></div>`;
+        container.innerHTML = `<div class="card flashcard" onclick="event.stopPropagation(); rvShowZh=!rvShowZh; renderReview()"><button class="btn-small danger" onclick="event.stopPropagation(); removeReview('${item.en}')">移除</button><div><div class="word-en">${item.en}</div></div><div style="margin-top:10px;"><button class="btn-tool" style="padding:8px 12px; border-radius:8px; background:#f0f7ff; border:1px solid #3498db; color:#3498db; font-weight:bold; cursor:pointer;" onclick="event.stopPropagation(); playVoice('${item.en}');">📢 發音</button><a class="btn-tool" style="padding:8px 12px; border-radius:8px; background:#f3f0ff; border:1px solid #d1c4e9; color:#8e44ad; font-weight:bold; text-decoration:none; margin-left:10px;" href="#" target="_blank" rel="noreferrer noopener" onclick="triggerAutoAI(event, '${item.en}')">🔍 字根</a></div><div style="color:#bdc3c7; font-style:italic; font-size:13px; margin: 15px 0;">(${item.pos})</div>${rvShowZh ? `<div class="zh-hint">${item.zh}</div>` : `<div style="margin-top:30px;opacity:0.6;font-size:11px;color:var(--primary);">點擊卡片翻面</div>`}</div><div class="nav-btns"><button class="nav-btn" onclick="event.stopPropagation(); rvIdx=(rvIdx-1+reviewList.length)%reviewList.length; rvShowZh=false; renderReview()">上一張</button><button class="nav-btn next" onclick="event.stopPropagation(); rvIdx=(rvIdx+1)%reviewList.length; rvShowZh=false; renderReview()">下一張</button></div>`;
     }
     function removeReview(en) { reviewList = reviewList.filter(i => i.en !== en); sync(); rvShowZh = false; if (rvIdx >= reviewList.length) rvIdx = 0; renderReview(); }
     initMenu(); sync();
