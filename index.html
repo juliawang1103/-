@@ -53,7 +53,7 @@
                 <div><div id="q-word" class="word-en">-</div></div>
                 <div style="margin-top:10px;">
                     <button class="btn-tool" onclick="event.stopPropagation(); playVoice();">📢 發音</button>
-                    <a id="auto-ai-link" class="btn-tool btn-gemini" href="#" target="_blank" rel="noreferrer noopener" onclick="triggerAutoAI(event)">🔍 字根查詢</a>
+                    <a id="auto-ai-link" class="btn-tool btn-gemini" href="#" target="_blank" rel="noreferrer noopener" onclick="triggerAutoAI(event)">🔍 查詢</a>
                 </div>
                 <div id="q-pos" style="color:#bdc3c7; font-style:italic; font-size:13px; margin: 12px 0 20px;">-</div>
                 <div id="q-options" class="options"></div>
@@ -109,7 +109,7 @@
 
     function sync() { localStorage.setItem(SAVE_KEY, JSON.stringify({ mastery: masteryRecords, review: reviewList })); document.getElementById('review-count').innerText = reviewList.length; }
     function playVoice(text = null) { const t = text || history[hIdx].word.en; const msg = new SpeechSynthesisUtterance(t); msg.lang = 'en-US'; msg.rate = 0.9; window.speechSynthesis.speak(msg); }
-    function triggerAutoAI(e, wordOverride = null) { e.stopPropagation(); const word = wordOverride || history[hIdx].word.en; e.currentTarget.href = `https://www.google.com/search?q=${encodeURIComponent(word + ' 的字根字首')}&hl=zh-TW`; }
+    function triggerAutoAI(e, wordOverride = null) { e.stopPropagation(); const word = wordOverride || history[hIdx].word.en; e.currentTarget.href = `https://www.google.com/search?q=${encodeURIComponent(word + ' 的字根字首與造句')}&hl=zh-TW`; }
 
     function initMenu() {
         const grid = document.getElementById('menu-grid'); grid.innerHTML = "";
